@@ -2,6 +2,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
+
 public class SocServer
 {
     public static void main(String[] args) throws Exception
@@ -16,18 +18,34 @@ public class SocServer
 
 
         InputStream in = socket.getInputStream();
-
+        OutputStream out=socket.getOutputStream();
         byte[] data = new byte[1024];
 
-        int bytesRead = in.read(data);
+        Scanner sc=new Scanner(System.in);
+        while(true)
+        {
 
 
-        String message = new String(data, 0, bytesRead);
+            int bytesRead = in.read(data);
 
-        System.out.println("Client says: " + message);
 
-        OutputStream out=socket.getOutputStream();
-        out.write(message.getBytes());
+            String message = new String(data, 0, bytesRead);
 
+            System.out.println("Client says: " + message);
+
+            String chat=sc.nextLine();
+
+
+            out.write(chat.getBytes());
+
+            if(chat.equals("exit"))
+            {
+
+                break;
+            }
+        }
+        out.close();
+        in.close();
+        socket.close();
     }
 }

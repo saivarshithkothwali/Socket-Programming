@@ -1,6 +1,7 @@
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class SocClient
 {
@@ -11,18 +12,36 @@ public class SocClient
         Socket client=new Socket(ip,port);
         System.out.println("Connected to server");
 
+        Scanner sc=new Scanner(System.in);
+
         OutputStream out=client.getOutputStream();
-
-        out.write("Hello Server".getBytes());
-
         InputStream in = client.getInputStream();
-
         byte[] data = new byte[1024];
 
-        int bytesRead = in.read(data);
+        while(true)
+        {
+            String chat=sc.nextLine();
+            out.write(chat.getBytes());
 
-        String message = new String(data,0,bytesRead);
 
-        System.out.println("Server says: " + message);
+
+
+
+            int bytesRead = in.read(data);
+
+            String message = new String(data,0,bytesRead);
+
+            System.out.println("Server says: " + message);
+
+            if(chat.equals("exit"))
+            {
+                client.close();
+                break;
+            }
+        }
+        out.close();
+        in.close();
+
+
     }
 }
