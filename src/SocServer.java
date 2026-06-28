@@ -14,6 +14,7 @@ public class SocServer
 
         System.out.println("client connected");
 
+
         InputStream in = socket.getInputStream();
 
         byte[] data = new byte[1024];
@@ -26,7 +27,7 @@ public class SocServer
         System.out.println("Client says: " + message);
 
         OutputStream out=socket.getOutputStream();
-        out.write("Hello Client".getBytes());
+        out.write(message.getBytes());
 
     }
 }
